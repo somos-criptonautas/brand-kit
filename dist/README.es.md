@@ -12,7 +12,7 @@ src/        el código que genera cada archivo
   nombre.py       el nombre "Criptonautas", reconstruido del PNG de 2023 (src/fuente/)
   horizontal.py   símbolo + nombre
   splash.py       animación de carga para Discourse
-  kit.py          arma dist/, el ZIP y la página; también los textos de cada sitio (SITES)
+  kit.py          arma dist/, el ZIP y la página
   pagina.py       el HTML de la página
   discourse.json  esquema de color del tema de Discourse
   portada.py      portadas 1200×630 para artículos y posts (CLI y HTTP para n8n)
@@ -39,10 +39,6 @@ make
 1. Activar la imagen de splash en `/admin/config/upcoming-changes`.
 2. Subir `dist/splash/criptonautas-splash.svg` en el ajuste `splash screen image`.
 3. Revisar en modo claro y oscuro: los colores salen del tema.
-
-## Nombre y descripción de los sitios
-
-`dist/voz/sitios.json` (se edita en `SITES`, dentro de `src/kit.py`) tiene el título y la descripción de criptonautas.co y comunidad.criptonautas.co, y en qué campo de Ghost y de Discourse va cada uno. `make` falla si un título pasa de 60 caracteres o una descripción de 155.
 
 ## Portadas automáticas
 

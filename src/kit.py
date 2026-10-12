@@ -33,6 +33,10 @@ BRAND = [
      'Acento secundario. Formas, gráficos y texto grande; nunca texto corrido.',
      'Secondary accent. Shapes, graphics and large type; never body text.'),
 ]
+# The symbol's violet on dark grounds: #C89DFF would sit 2 L* from #F98E76 and the ring would go flat in greyscale.
+SHAPE_DK = ('violeta-tinta-formas', 'Violeta Tinta · formas', simbolo.VIOLET_DK,
+            'Solo formas y el símbolo en modo oscuro: separa del Rojo Óxido en escala de grises. Nunca texto.',
+            'Shapes and the symbol in dark mode only: it separates from Rojo Óxido in greyscale. Never text.')
 NEUTRAL = [
     ('ink', 'Ink', '#14110F', 'Todo el texto. Nunca negro puro.', 'All text. Never pure black.'),
     ('paper', 'Paper', '#E8E6E1', 'Fondo. Blanco neutro, ni crema ni sepia.', 'Ground. Neutral off-white, never cream or sepia.'),
@@ -66,16 +70,17 @@ def colour_files(out):
     out.mkdir(parents=True, exist_ok=True)
     tokens = {s: {'name': n, 'light': l, 'dark': d} for s, n, l, d, *_ in BRAND + SEMANTIC}
     tokens.update({s: {'name': n, 'value': v} for s, n, v, *_ in NEUTRAL})
+    tokens[SHAPE_DK[0]] = {'name': SHAPE_DK[1], 'light': simbolo.VIOLET, 'dark': SHAPE_DK[2]}
     (out / 'tokens.json').write_text(json.dumps(tokens, ensure_ascii=False, indent=2) + '\n')
     css = [':root {']
     css += [f'  --cn-{s}: {l};' for s, n, l, d, *_ in BRAND + SEMANTIC]
-    css += [f'  --cn-{s}: {v};' for s, n, v, *_ in NEUTRAL]
+    css += [f'  --cn-{s}: {v};' for s, n, v, *_ in NEUTRAL] + [f'  --cn-{SHAPE_DK[0]}: {simbolo.VIOLET};']
     css += ['}', '@media (prefers-color-scheme: dark) {', '  :root {']
-    css += [f'    --cn-{s}: {d};' for s, n, l, d, *_ in BRAND + SEMANTIC]
+    css += [f'    --cn-{s}: {d};' for s, n, l, d, *_ in BRAND + SEMANTIC] + [f'    --cn-{SHAPE_DK[0]}: {SHAPE_DK[2]};']
     css += ['  }', '}']
     (out / 'paleta.css').write_text('\n'.join(css) + '\n')
     gpl = ['GIMP Palette', 'Name: Criptonautas', 'Columns: 4', '#']
-    for s, n, v, *_ in [(s, n, l) for s, n, l, *_ in BRAND] + [(s, f'{n} (oscuro)', d) for s, n, l, d, *_ in BRAND] \
+    for s, n, v, *_ in [(s, n, l) for s, n, l, *_ in BRAND] + [(s, f'{n} (oscuro)', d) for s, n, l, d, *_ in BRAND] + [(SHAPE_DK[0], f'{SHAPE_DK[1]} (oscuro)', SHAPE_DK[2])] \
             + [(s, n, v) for s, n, v, *_ in NEUTRAL]:
         r, g, b = (int(v[i:i + 2], 16) for i in (1, 3, 5))
         gpl.append(f'{r:3d} {g:3d} {b:3d}\t{n}')
@@ -230,7 +235,7 @@ def build():
     import pagina
     (DOCS / 'index.html').write_text(pagina.render(
         version=VERSION, fecha=date.today().isoformat(), repo=REPO_URL,
-        brand=BRAND, neutral=NEUTRAL, semantic=SEMANTIC, ui=UI,
+        brand=BRAND, shape_dk=SHAPE_DK, neutral=NEUTRAL, semantic=SEMANTIC, ui=UI,
         contrast=contrast, rgb=rgb, templates=tpl, variants=list(VARIANTS),
         zip_kb=zpath.stat().st_size // 1024))
     return zpath

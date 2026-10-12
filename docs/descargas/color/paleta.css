@@ -6,6 +6,7 @@
   --cn-ink: #14110F;
   --cn-paper: #E8E6E1;
   --cn-halftone: #7E7973;
+  --cn-violeta-tinta-formas: #5814EA;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -13,5 +14,6 @@
     --cn-rojo-oxido: #F98E76;
     --cn-error: #FF8DA5;
     --cn-exito: #6DC08F;
+    --cn-violeta-tinta-formas: #7C36FF;
   }
 }

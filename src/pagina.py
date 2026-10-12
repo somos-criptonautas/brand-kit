@@ -80,9 +80,9 @@ def misuse():
     return ''.join(out)
 
 
-def swatch(name, hexv, role_es, role_en, contrast, on, on_label, rgb):
+def swatch(name, hexv, role_es, role_en, contrast, on, on_label, rgb, graphics=False):
     c = contrast(hexv, on)
-    use_es, use_en = (('solo gráficos', 'graphics only') if name == 'Halftone' else ('texto', 'text') if c >= 4.5 else ('texto grande y gráficos', 'large text & graphics')
+    use_es, use_en = (('solo gráficos', 'graphics only') if graphics or name == 'Halftone' else ('texto', 'text') if c >= 4.5 else ('texto grande y gráficos', 'large text & graphics')
                       if c >= 3 else ('solo gráficos', 'graphics only'))
     ink = '#14110F' if contrast(hexv, '#14110F') > contrast(hexv, '#FFFFFF') else '#FFFFFF'
     return (f'<figure class="swatch"><div class="chip" style="background:{hexv};color:{ink}">'
@@ -205,12 +205,13 @@ b.forEach(function(x){x.addEventListener('click',function(){set(x.dataset.setLan
 """
 
 
-def render(version, fecha, repo, brand, neutral, semantic, ui, contrast, rgb, templates, variants, zip_kb):
+def render(version, fecha, repo, brand, shape_dk, neutral, semantic, ui, contrast, rgb, templates, variants, zip_kb):
     P, DK = '#E8E6E1', '#181719'
     SPLASH = splash_mod.splash().replace('<svg ', '<svg aria-hidden="true" ', 1)
     sw_brand = ''.join(swatch(n, l, es, en, contrast, P, 'Paper', rgb) for s, n, l, d, es, en in brand)
     sw_dark = ''.join(swatch(f'{n} · {t("oscuro", "dark")}', d, es, en, contrast, DK, '#181719', rgb)
-                      for s, n, l, d, es, en in brand)
+                      for s, n, l, d, es, en in brand) + swatch(shape_dk[1] + f' · {t("oscuro", "dark")}', shape_dk[2], shape_dk[3],
+                                                                 shape_dk[4], contrast, DK, '#181719', rgb, graphics=True)
     sw_neutral = ''.join(swatch(n, v, es, en, contrast, P if s != 'paper' else '#14110F',
                                 'Paper' if s != 'paper' else 'Ink', rgb) for s, n, v, es, en in neutral)
     sw_sem = ''.join(swatch(n, l, es, en, contrast, P, 'Paper', rgb) + swatch(f'{n} · {t("oscuro", "dark")}', d, es, en, contrast, DK, '#181719', rgb)

@@ -12,7 +12,7 @@ src/        the code that builds every file
   nombre.py       the name "Criptonautas", rebuilt from the 2023 PNG (src/fuente/)
   horizontal.py   symbol + name
   splash.py       loading animation for Discourse
-  kit.py          builds dist/, the ZIP and the page; also each site's texts (SITES)
+  kit.py          builds dist/, the ZIP and the page
   pagina.py       the page's HTML
   discourse.json  Discourse theme colour scheme
   portada.py      1200×630 covers for articles and posts (CLI and HTTP for n8n)
@@ -39,10 +39,6 @@ make
 1. Enable the splash image in `/admin/config/upcoming-changes`.
 2. Upload `dist/splash/criptonautas-splash.svg` in the `splash screen image` setting.
 3. Check light and dark mode: colours come from the theme.
-
-## Site name and description
-
-`dist/voz/sitios.json` (edited in `SITES`, inside `src/kit.py`) holds the title and description of criptonautas.co and comunidad.criptonautas.co, and which Ghost and Discourse field each goes in. The texts are in Spanish, as both sites are. `make` fails if a title runs past 60 characters or a description past 155.
 
 ## Automatic covers
 

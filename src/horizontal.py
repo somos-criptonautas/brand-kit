@@ -33,7 +33,7 @@ def symbol_group(fills):
 
 
 def lockup(sym_fills, text_fill, d):
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}">'
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W // 10}" height="{H // 10}">'
             f'{symbol_group(sym_fills)}'
             f'<path fill="{text_fill}" fill-rule="evenodd" d="{d}"/></svg>\n')
 
