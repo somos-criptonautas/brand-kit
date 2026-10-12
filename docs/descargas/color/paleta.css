@@ -1,0 +1,17 @@
+:root {
+  --cn-violeta-tinta: #5814EA;
+  --cn-rojo-oxido: #E6211E;
+  --cn-error: #9E1B27;
+  --cn-exito: #1F7A5C;
+  --cn-ink: #14110F;
+  --cn-paper: #E8E6E1;
+  --cn-halftone: #7E7973;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cn-violeta-tinta: #C89DFF;
+    --cn-rojo-oxido: #F98E76;
+    --cn-error: #FF8DA5;
+    --cn-exito: #6DC08F;
+  }
+}
