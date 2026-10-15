@@ -6,15 +6,16 @@
     python3 src/portada.py --probar                      # autocomprobación
 
 HTTP (para el nodo HTTP Request de n8n):
-    POST /portada   JSON {"categoria", "titulo", "imagen": base64 opcional, "formato": "png" | "webp"}
+    POST /portada   JSON {"categoria", "titulo", "formato": "png" | "webp"}
                     → la imagen (Content-Type image/png o image/webp)
     GET  /salud     → "ok"
-    Si PORTADA_TOKEN está definido, cada POST debe traer "Authorization: Bearer <token>".
+    --servir exige PORTADA_TOKEN; cada POST debe traer "Authorization: Bearer <token>".
+    La ilustración solo se acepta por línea de comandos: el servidor no decodifica imágenes ajenas.
 
 Necesita cairosvg y Pillow, y las fuentes de fonts-src/ instaladas en el sistema (Inter Tight).
 Las salidas no llevan metadatos.
 """
-import argparse, base64, binascii, html, io, json, os, re, sys, unicodedata
+import argparse, base64, hmac, html, io, json, os, re, sys, unicodedata
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -141,6 +142,10 @@ def slugify(s):
 
 # ---------------------------------------------------------------- HTTP para n8n
 class Handler(BaseHTTPRequestHandler):
+    timeout = 10        # una conexión lenta no retiene un hilo para siempre
+    token = b''         # lo fija --servir; vacío rechaza todo
+    max_body = 4096     # solo viajan dos textos cortos
+
     def _send(self, code, body, ctype='text/plain; charset=utf-8'):
         self.send_response(code)
         self.send_header('Content-Type', ctype)
@@ -154,24 +159,23 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path != '/portada':
             return self._send(404, b'no existe')
-        token = os.environ.get('PORTADA_TOKEN')
-        if token and self.headers.get('Authorization') != f'Bearer {token}':
+        if not self.token or not hmac.compare_digest(self.headers.get('Authorization', '').encode(), b'Bearer ' + self.token):
             return self._send(401, b'token incorrecto')
-        n = int(self.headers.get('Content-Length') or 0)
-        if not 0 < n <= MAX_IMAGE * 4 // 3 + 4096:      # base64 de 10 MB + el resto del JSON
+        try:
+            n = int(self.headers.get('Content-Length', ''))
+        except ValueError:
+            return self._send(400, b'falta Content-Length')
+        if not 0 < n <= self.max_body:
             return self._send(413, b'cuerpo vacio o demasiado grande')
         try:
             req = json.loads(self.rfile.read(n))
             if not isinstance(req, dict):
                 raise Invalida('se espera un objeto JSON')
-            img = req.get('imagen')
-            try:
-                img = base64.b64decode(img, validate=True) if img else None
-            except (binascii.Error, TypeError):
-                raise Invalida('imagen: base64 inválido')
+            if 'imagen' in req:
+                raise Invalida('la ilustración solo se acepta por línea de comandos')
             fmt = req.get('formato', 'png')
-            out = render(str(req.get('categoria', '')), str(req.get('titulo', '')), img, fmt)
-        except (Invalida, json.JSONDecodeError) as e:
+            out = render(str(req.get('categoria', '')), str(req.get('titulo', '')), None, fmt)
+        except (Invalida, ValueError) as e:      # ValueError cubre JSON y UTF-8 inválidos
             return self._send(422, str(e).encode())
         self._send(200, out, f'image/{fmt}')
 
@@ -202,7 +206,29 @@ def probar():
         render('Curso', 'Imagen falsa', b'<svg onload=1>'); raise AssertionError('debía rechazar la imagen')
     except Invalida:
         pass
+    _probar_http()
     print('portada ok')
+
+
+def _probar_http():
+    import http.client, threading
+    Handler.token = b'secreto'
+    srv = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+
+    def pedir(body, auth='Bearer secreto', headers=None):
+        c = http.client.HTTPConnection('127.0.0.1', srv.server_port, timeout=20)
+        c.request('POST', '/portada', body, {'Authorization': auth, **(headers or {})})
+        r = c.getresponse(); r.read(); c.close()
+        return r.status
+    ok = json.dumps({'categoria': 'Curso', 'titulo': 'Prueba'})
+    assert pedir(ok) == 200
+    assert pedir(ok, 'Bearer otro') == 401
+    assert pedir(ok, '') == 401
+    assert pedir('x' * 5000) == 413
+    assert pedir('{"categoria": "Curso", "titulo": "x", "imagen": "AAAA"}') == 422
+    assert pedir('no es json') == 422
+    srv.shutdown()
 
 
 def _chunks(data):
@@ -223,6 +249,9 @@ if __name__ == '__main__':
     if a.probar:
         probar()
     elif a.servir:
+        Handler.token = os.environ.get('PORTADA_TOKEN', '').encode()
+        if len(Handler.token) < 32:
+            sys.exit('portada: definí PORTADA_TOKEN (32 caracteres o más) antes de --servir')
         print(f'portada escuchando en http://{a.host}:{a.puerto}')
         ThreadingHTTPServer((a.host, a.puerto), Handler).serve_forever()
     elif a.categoria and a.titulo:
