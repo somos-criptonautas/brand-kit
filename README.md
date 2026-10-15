@@ -56,17 +56,20 @@ Needs Inter Tight installed system-wide (the ones in `fonts-src/`).
 ```
 make
 docker build -f Dockerfile.portada -t criptonautas-portada .
-docker run -d --name portada --network <n8n-network> -e PORTADA_TOKEN=<token> criptonautas-portada
+umask 077; printf 'PORTADA_TOKEN=%s\n' "$(openssl rand -hex 32)" > portada.env
+docker run -d --name portada --restart unless-stopped --network <n8n-network> --env-file portada.env \
+  --read-only --tmpfs /tmp:size=16m --cap-drop ALL --security-opt no-new-privileges \
+  --memory 256m --pids-limit 64 criptonautas-portada
 ```
 
 In n8n, an **HTTP Request** node:
 
 - Method `POST`, URL `http://portada:8787/portada`
 - Authentication: Header Auth → `Authorization: Bearer <token>`
-- Body JSON: `{"categoria": "{{ $json.categoria }}", "titulo": "{{ $json.titulo }}", "formato": "webp"}`. To send an illustration, add `"imagen"` with the binary in base64.
+- Body JSON: `{"categoria": "{{ $json.categoria }}", "titulo": "{{ $json.titulo }}", "formato": "webp"}`. The illustration is CLI-only: the server never decodes images from outside.
 - Response → Response Format: **File**. The next node receives the cover as binary and uploads it to Ghost or Discourse.
 
-Errors: `422` with the reason as text (title too long, invalid image), `401` without the token, `413` body too large. `GET /salud` answers `ok`.
+The service refuses to start without a `PORTADA_TOKEN` of 32+ characters and publishes no port: only n8n reaches it, over the internal network. Errors: `422` with the reason as text (title too long, invalid JSON), `401` wrong token, `400` no `Content-Length`, `413` body over 4 KB. `GET /salud` answers `ok`.
 
 ## Publishing with nginx
 
