@@ -10,8 +10,8 @@ X0, Y0 = 185, 60            # wordmark crop origin inside the source image
 W, H = (805 - LEFT) * S, (176 - TOP) * S
 
 INK, PAPER = '#14110F', '#E8E6E1'
-VIOLET, RUST = '#5814EA', '#E6211E'
-VIOLET_DK, RUST_DK = '#7C36FF', '#F98E76'
+VIOLET, RUST = '#5814EA', '#E5500A'
+VIOLET_DK, RUST_DK = '#7C36FF', '#F3936A'
 
 
 def wordmark_d(ox, oy):
