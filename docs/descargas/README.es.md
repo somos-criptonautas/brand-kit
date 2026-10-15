@@ -40,6 +40,7 @@ make
 - **Rojo Óxido** pasa a `#E5500A` (claro) y `#F3936A` (oscuro); antes `#E6211E` y `#F98E76`. Los nombres no cambian (`rojo-oxido`, `--cn-rojo-oxido`, las claves de `tokens.json`), así que nada que los use se rompe. El rojo claro da 3,07:1 sobre Paper: solo texto grande y gráficos, como antes.
 - **Violeta Tinta · botones** `#8E4CFF`, token solo de modo oscuro (`--cn-violeta-boton`): fondo de botones primarios con texto blanco, 4,54:1. Los enlaces siguen en `#C89DFF`, porque `#8E4CFF` como texto sobre `#181719` da solo 3,94:1. El código de Discourse que lo aplica está en `discourse/tema/`.
 - **Lato** se suma a la tipografía: texto e interfaz del foro. Inter Tight sigue en los titulares de todas las superficies y Lora en la lectura larga del blog.
+- Los TTF del ZIP se recortan al set latino que usa el kit (siguen siendo instalables y conservan los ejes variables): el ZIP baja a ~1 MB. `fonts-src/` conserva los archivos completos.
 - **Splash** más lento: de 0,55 s a 0,9 s por paso en `src/splash.py` (`discourse/splash.svg` ya iba a 0,9 s).
 - `make` no regenera `discourse/` ni `ghost/`: su rojo se cambió en el lugar. Las imágenes ya subidas a Discourse o Ghost hay que volver a subirlas, y en la paleta del foro hay que actualizar `quaternary` a mano.
 

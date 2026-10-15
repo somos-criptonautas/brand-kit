@@ -40,6 +40,7 @@ make
 - **Rojo Óxido** is `#E5500A` (light) and `#F3936A` (dark), formerly `#E6211E` and `#F98E76`. Names stay the same (`rojo-oxido`, `--cn-rojo-oxido`, the `tokens.json` keys), so nothing that uses them breaks. The light red is 3.07:1 on Paper: large text and graphics only, as before.
 - **Violeta Tinta · botones** `#8E4CFF`, a dark-mode-only token (`--cn-violeta-boton`): primary-button fill under white text, 4.54:1. Links keep `#C89DFF`, because `#8E4CFF` as text on `#181719` is only 3.94:1. The Discourse code that applies it is in `discourse/tema/`.
 - **Lato** joins the type: text and interface on the forum. Inter Tight keeps headings everywhere, Lora long reading on the blog.
+- The ZIP's TTFs are cut to the Latin set the kit uses (still installable, variable axes kept): the ZIP drops to about 1 MB. `fonts-src/` keeps the full files.
 - **Splash** beat slowed from 0.55 s to 0.9 s in `src/splash.py` (`discourse/splash.svg` already ran at 0.9 s).
 - `discourse/` and `ghost/` aren't rebuilt by `make`: their red was swapped in place. Images already uploaded to Discourse or Ghost have to be uploaded again, and the forum's colour palette needs `quaternary` updated by hand.
 

@@ -213,7 +213,11 @@ def fonts(kit_dir, web_dir):
     kit_dir.mkdir(parents=True, exist_ok=True)
     web_dir.mkdir(parents=True, exist_ok=True)
     for f in FONTS.glob('*'):
-        shutil.copy(f, kit_dir / f.name)
+        if f.suffix == '.ttf':   # still installable TTF, cut to the Latin set the kit uses
+            subprocess.run(['pyftsubset', str(f), f'--unicodes={LATIN}', '--layout-features=*',
+                            f'--output-file={kit_dir / f.name}'], check=True)
+        else:
+            shutil.copy(f, kit_dir / f.name)
     for web, src in FONT_FILES.items():
         subprocess.run(['pyftsubset', str(FONTS / src), f'--unicodes={LATIN}', '--flavor=woff2',
                         '--layout-features=*', f'--output-file={web_dir / (web + ".woff2")}'], check=True)
