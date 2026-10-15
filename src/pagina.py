@@ -106,7 +106,10 @@ VOICE = [
 TEMPLATE_NAMES = {
     'portada-1200x630': ('Portada de artículo / vista previa de enlace', 'Article cover / link preview'),
     'avatar-512-claro': ('Avatar, claro', 'Avatar, light'), 'avatar-512-oscuro': ('Avatar, oscuro', 'Avatar, dark'),
-    'banner-1500x500-claro': ('Banner, claro', 'Banner, light'), 'banner-1500x500-oscuro': ('Banner, oscuro', 'Banner, dark'),
+    'banner-1500x500-claro': ('Banner de la comunidad, claro', 'Community banner, light'),
+    'banner-1500x500-oscuro': ('Banner de la comunidad, oscuro', 'Community banner, dark'),
+    'banner-blog-1500x500-claro': ('Banner del blog, claro', 'Blog banner, light'),
+    'banner-blog-1500x500-oscuro': ('Banner del blog, oscuro', 'Blog banner, dark'),
 }
 
 CSS = """
@@ -403,8 +406,12 @@ def render(version, fecha, repo, brand, shape_dk, button_dk, neutral, semantic, 
 
 <section id="plantillas"><div class="wrap">
 <h2>{t('Plantillas', 'Templates')}</h2>
-{blk('Los SVG tienen el texto editable: se abren en Inkscape, Figma o Penpot con Inter Tight instalada.',
-     'SVG text stays editable: open them in Inkscape, Figma or Penpot with Inter Tight installed.')}
+{blk('Los SVG tienen el texto editable: se abren en Inkscape, Figma o Penpot con Inter Tight instalada. '
+     'Los banners de 1500 × 500 son la cabecera de un perfil (fediverso, redes): el de la comunidad lleva '
+     'comunidad.criptonautas.co y el del blog, criptonautas.co; los avatares, el símbolo solo.',
+     'SVG text stays editable: open them in Inkscape, Figma or Penpot with Inter Tight installed. '
+     'The 1500 × 500 banners are profile headers (fediverse, social): the community one carries '
+     'comunidad.criptonautas.co and the blog one criptonautas.co; the avatars, the symbol alone.')}
 <div class="grid wide tpl-grid">{tpl_cards}</div>
 </div></section>
 

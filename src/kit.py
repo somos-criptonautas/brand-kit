@@ -178,14 +178,17 @@ def templates(out):
 
     modes = (('claro', (simbolo.VIOLET, simbolo.RUST), PAPER, 'color', INK),
              ('oscuro', (simbolo.VIOLET_DK, simbolo.RUST_DK), DARK_BG, 'oscuro', PAPER))
-    for mode, fills, bg, lock, txt in modes:     # banners before avatars: similar heights share a row
-        lw = 760
-        files[f'banner-1500x500-{mode}'] = (
-            f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500">'
-            f'<rect width="1500" height="500" fill="{bg}"/>'
-            f'{place(hz[lock], (1500 - lw) / 2, 160, lw, lw / hz_ratio)}'
-            f'<text x="750" y="380" text-anchor="middle" font-family="Inter Tight" font-size="28" fill="{txt}">'
-            f'comunidad.criptonautas.co</text></svg>\n')
+    # Profile headers (fediverse, social): the forum's under the old names, the
+    # blog's with its own address. Banners before avatars: similar heights share a row.
+    for name, url in (('banner-1500x500', 'comunidad.criptonautas.co'), ('banner-blog-1500x500', 'criptonautas.co')):
+        for mode, fills, bg, lock, txt in modes:
+            lw = 760
+            files[f'{name}-{mode}'] = (
+                f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500">'
+                f'<rect width="1500" height="500" fill="{bg}"/>'
+                f'{place(hz[lock], (1500 - lw) / 2, 160, lw, lw / hz_ratio)}'
+                f'<text x="750" y="380" text-anchor="middle" font-family="Inter Tight" font-size="28" fill="{txt}">'
+                f'{url}</text></svg>\n')
     for mode, fills, bg, lock, txt in modes:
         s = 400                                    # leaves more than one head of clear space
         files[f'avatar-512-{mode}'] = (
