@@ -6,7 +6,7 @@ prefixed keyframe names, theme colours via var(--tertiary) / var(--quaternary).
 """
 import simbolo as build
 
-STEP = 0.55            # one beat
+STEP = 0.9             # one beat
 TURN = 0.35            # rotation inside the beat; the rest is the pause
 DIM = 0.35             # opacity of figures not at the top
 CYCLE = 6 * STEP
@@ -41,7 +41,7 @@ def splash():
     head_y = build.C - build.R
     m = 500 - (build.R + build.r)            # ring radius 481.5: no clipping mid-turn
     css = (
-        ".cn-v{fill:var(--tertiary,#5814EA)}.cn-r{fill:var(--quaternary,#E6211E)}"
+        ".cn-v{fill:var(--tertiary,#5814EA)}.cn-r{fill:var(--quaternary,#E5500A)}"
         f".cn-ring{{transform-box:fill-box;transform-origin:50% 50%;"
         f"animation:cn-turn {CYCLE:.2f}s {EASE} infinite}}"
         f".cn-f{{animation:cn-lit {CYCLE:.2f}s {EASE} infinite}}"

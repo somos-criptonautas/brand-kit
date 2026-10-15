@@ -1,6 +1,6 @@
 :root {
   --cn-violeta-tinta: #5814EA;
-  --cn-rojo-oxido: #E6211E;
+  --cn-rojo-oxido: #E5500A;
   --cn-error: #9E1B27;
   --cn-exito: #1F7A5C;
   --cn-ink: #14110F;
@@ -11,9 +11,10 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --cn-violeta-tinta: #C89DFF;
-    --cn-rojo-oxido: #F98E76;
+    --cn-rojo-oxido: #F3936A;
     --cn-error: #FF8DA5;
     --cn-exito: #6DC08F;
     --cn-violeta-tinta-formas: #7C36FF;
+    --cn-violeta-boton: #8E4CFF;
   }
 }

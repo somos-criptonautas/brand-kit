@@ -50,8 +50,8 @@ def clear_space():
             f'<rect x="{-m}" y="{-m}" width="{W + 2 * m}" height="{H + 2 * m}" fill="none" stroke="#7E7973" '
             f'stroke-width="14" stroke-dasharray="60 40"/>'
             f'<image href="{D}/logo/horizontal/criptonautas-horizontal-color.svg" width="{W}" height="{H}"/>'
-            f'<rect width="{W}" height="{H}" fill="none" stroke="#E6211E" stroke-width="10" stroke-dasharray="30 30"/>'
-            + ''.join(f'<circle cx="{cx}" cy="{cy}" r="{x / 2}" fill="none" stroke="#E6211E" stroke-width="12"/>'
+            f'<rect width="{W}" height="{H}" fill="none" stroke="#E5500A" stroke-width="10" stroke-dasharray="30 30"/>'
+            + ''.join(f'<circle cx="{cx}" cy="{cy}" r="{x / 2}" fill="none" stroke="#E5500A" stroke-width="12"/>'
                       for cx, cy in ((-m / 2, H / 2), (W + m / 2, H / 2), (W / 2, -m / 2), (W / 2, H + m / 2)))
             + '</svg>')
 
@@ -106,17 +106,23 @@ VOICE = [
 TEMPLATE_NAMES = {
     'portada-1200x630': ('Portada de artículo / vista previa de enlace', 'Article cover / link preview'),
     'avatar-512-claro': ('Avatar, claro', 'Avatar, light'), 'avatar-512-oscuro': ('Avatar, oscuro', 'Avatar, dark'),
-    'banner-1500x500-claro': ('Banner, claro', 'Banner, light'), 'banner-1500x500-oscuro': ('Banner, oscuro', 'Banner, dark'),
+    'banner-1500x500-claro': ('Banner de la comunidad, claro', 'Community banner, light'),
+    'banner-1500x500-oscuro': ('Banner de la comunidad, oscuro', 'Community banner, dark'),
+    'banner-blog-1500x500-claro': ('Banner del blog, claro', 'Blog banner, light'),
+    'banner-blog-1500x500-oscuro': ('Banner del blog, oscuro', 'Blog banner, dark'),
 }
 
 CSS = """
 @font-face{font-family:"Inter Tight";src:url(fuentes/inter-tight.woff2) format("woff2");font-weight:100 900;font-display:swap}
 @font-face{font-family:"Inter Tight";src:url(fuentes/inter-tight-italic.woff2) format("woff2");font-weight:100 900;font-style:italic;font-display:swap}
 @font-face{font-family:Lora;src:url(fuentes/lora.woff2) format("woff2");font-weight:400 700;font-display:swap}
+@font-face{font-family:Lato;src:url(fuentes/lato-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Lato;src:url(fuentes/lato-400i.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:Lato;src:url(fuentes/lato-700.woff2) format("woff2");font-weight:700;font-display:swap}
 :root{--bg:#F8F8F8;--surface:#FFFFFF;--line:#DEDBD6;--text:#1A1A1A;--muted:#5C5852;--accent:#5814EA;--accent-text:#FFFFFF;
---warn:#E6211E;color-scheme:light dark}
+--warn:#E5500A;color-scheme:light dark}
 @media (prefers-color-scheme:dark){:root{--bg:#181719;--surface:#222024;--line:#3B393E;--text:#F1F1F1;--muted:#B5B0AA;
---accent:#C89DFF;--accent-text:#181719;--warn:#F98E76}}
+--accent:#C89DFF;--accent-text:#181719;--warn:#F3936A}}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 html[data-lang=es] [lang=en]:not(html),html[data-lang=en] [lang=es]:not(html){display:none}
@@ -205,13 +211,15 @@ b.forEach(function(x){x.addEventListener('click',function(){set(x.dataset.setLan
 """
 
 
-def render(version, fecha, repo, brand, shape_dk, neutral, semantic, ui, contrast, rgb, templates, variants, zip_kb):
+def render(version, fecha, repo, brand, shape_dk, button_dk, neutral, semantic, ui, contrast, rgb, templates, variants, zip_kb):
     P, DK = '#E8E6E1', '#181719'
     SPLASH = splash_mod.splash().replace('<svg ', '<svg aria-hidden="true" ', 1)
     sw_brand = ''.join(swatch(n, l, es, en, contrast, P, 'Paper', rgb) for s, n, l, d, es, en in brand)
     sw_dark = ''.join(swatch(f'{n} · {t("oscuro", "dark")}', d, es, en, contrast, DK, '#181719', rgb)
                       for s, n, l, d, es, en in brand) + swatch(shape_dk[1] + f' · {t("oscuro", "dark")}', shape_dk[2], shape_dk[3],
-                                                                 shape_dk[4], contrast, DK, '#181719', rgb, graphics=True)
+                                                                 shape_dk[4], contrast, DK, '#181719', rgb, graphics=True) \
+        + swatch(button_dk[1] + f' · {t("oscuro", "dark")}', button_dk[2], button_dk[3], button_dk[4], contrast,
+                 '#FFFFFF', t('texto blanco', 'white text'), rgb)
     sw_neutral = ''.join(swatch(n, v, es, en, contrast, P if s != 'paper' else '#14110F',
                                 'Paper' if s != 'paper' else 'Ink', rgb) for s, n, v, es, en in neutral)
     sw_sem = ''.join(swatch(n, l, es, en, contrast, P, 'Paper', rgb) + swatch(f'{n} · {t("oscuro", "dark")}', d, es, en, contrast, DK, '#181719', rgb)
@@ -327,13 +335,16 @@ def render(version, fecha, repo, brand, shape_dk, neutral, semantic, ui, contras
 
 <section id="tipografia"><div class="wrap">
 <h2>{t('Tipografía', 'Type')}</h2>
-{blk('Dos familias, cada una con un lugar. Las dos son libres (licencia OFL) y vienen en el ZIP.',
-     'Two families, each with its place. Both are free (OFL licence) and included in the ZIP.')}
+{blk('Tres familias, cada una con un lugar. Las tres son libres (licencia OFL) y vienen en el ZIP.',
+     'Three families, each with its place. All three are free (OFL licence) and included in the ZIP.')}
 <div class="grid wide">
 <div class="type"><h3>Inter Tight</h3><p class="sample" style="font-family:'Inter Tight';font-weight:800;letter-spacing:-.02em">{t('Aprender en comunidad', 'Learning together')}</p>
 <p class="sample" style="font-family:'Inter Tight'">{t('Una pregunta, varias respuestas.', 'One question, many answers.')}</p>
-{blk('Titulares en todas las superficies, en 800 con la interletra cerrada (-0,02 em). Texto e interfaz en la comunidad, en 400.',
-     'Headings on every surface, at 800 with tracking tightened (-0.02 em). Text and interface in the community, at 400.')}</div>
+{blk('Titulares en todas las superficies, en 800 con la interletra cerrada (-0,02 em). Texto de plantillas y piezas gráficas, en 400.',
+     'Headings on every surface, at 800 with tracking tightened (-0.02 em). Text on templates and graphics, at 400.')}</div>
+<div class="type"><h3>Lato</h3><p class="sample" style="font-family:Lato">{t('Una pregunta, varias respuestas.', 'One question, many answers.')}</p>
+{blk('Texto e interfaz en la comunidad (el foro), en 400 y 700. Los titulares siguen en Inter Tight.',
+     'Text and interface in the community (the forum), at 400 and 700. Headings stay in Inter Tight.')}</div>
 <div class="type"><h3>Lora</h3><p class="sample body" style="font-family:Lora">{t('El curso se lee con tiempo. Cada capítulo propone un criterio, lo explica con un caso real y deja la discusión abierta en la comunidad, donde se revisa y se mejora entre todos.', 'The course is read at length. Each chapter puts forward a criterion, explains it with a real case and leaves the discussion open in the community, where it is reviewed and improved together.')}</p>
 {blk('Lectura larga en el blog: artículos, ensayos y capítulos del curso. Cuerpo en 400, con interlineado amplio y líneas de 60 a 75 caracteres. Los titulares siguen en Inter Tight.', 'Long-form reading on the blog: articles, essays and course chapters. Body at 400, with generous leading and lines of 60 to 75 characters. Headings stay in Inter Tight.')}</div>
 </div>
@@ -388,15 +399,19 @@ def render(version, fecha, repo, brand, shape_dk, neutral, semantic, ui, contras
      'Con "reducir movimiento" activado se muestra el logo quieto.',
      'The ring turns one step at a time and the figure reaching the top lights up: it takes the floor and passes it on. '
      'With "reduce motion" on, the logo stays still.')}
-<div class="splash"><div style="background:#F8F8F8;--tertiary:#5814EA;--quaternary:#E6211E">{SPLASH}</div>
-<div style="background:#181719;--tertiary:#C89DFF;--quaternary:#F98E76">{SPLASH}</div></div>
+<div class="splash"><div style="background:#F8F8F8;--tertiary:#5814EA;--quaternary:#E5500A">{SPLASH}</div>
+<div style="background:#181719;--tertiary:#C89DFF;--quaternary:#F3936A">{SPLASH}</div></div>
 <div class="dls">{dl('splash/criptonautas-splash.svg', 'criptonautas-splash.svg')}</div>
 </div></section>
 
 <section id="plantillas"><div class="wrap">
 <h2>{t('Plantillas', 'Templates')}</h2>
-{blk('Los SVG tienen el texto editable: se abren en Inkscape, Figma o Penpot con Inter Tight instalada.',
-     'SVG text stays editable: open them in Inkscape, Figma or Penpot with Inter Tight installed.')}
+{blk('Los SVG tienen el texto editable: se abren en Inkscape, Figma o Penpot con Inter Tight instalada. '
+     'Los banners de 1500 × 500 son la cabecera de un perfil (fediverso, redes): el de la comunidad lleva '
+     'comunidad.criptonautas.co y el del blog, criptonautas.co; los avatares, el símbolo solo.',
+     'SVG text stays editable: open them in Inkscape, Figma or Penpot with Inter Tight installed. '
+     'The 1500 × 500 banners are profile headers (fediverse, social): the community one carries '
+     'comunidad.criptonautas.co and the blog one criptonautas.co; the avatars, the symbol alone.')}
 <div class="grid wide tpl-grid">{tpl_cards}</div>
 </div></section>
 

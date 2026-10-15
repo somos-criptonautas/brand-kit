@@ -100,9 +100,9 @@ def body_path(D, T=TRUNC):
 
 
 VIOLET = "#5814EA"
-RUST = "#E6211E"
+RUST = "#E5500A"
 VIOLET_DK = "#7C36FF"   # dark-surface variants, color-system-v02 §3
-RUST_DK = "#F98E76"
+RUST_DK = "#F3936A"
 INK = "#14110F"
 PAPER = "#E8E6E1"
 

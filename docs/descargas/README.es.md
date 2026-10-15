@@ -16,9 +16,10 @@ src/        el código que genera cada archivo
   pagina.py       el HTML de la página
   discourse.json  esquema de color del tema de Discourse
   portada.py      portadas 1200×630 para artículos y posts (CLI y HTTP para n8n)
-fonts-src/  Inter Tight y Lora con su licencia OFL
+fonts-src/  Inter Tight, Lora y Lato con su licencia OFL
 dist/       archivos listos para usar (generados)
 discourse/  imágenes para los settings de Discourse (logos, íconos, splash, push)
+  tema/           el código de color del componente del tema (violeta de botón oscuro), como referencia
 ghost/      imágenes para Design & branding y Newsletter de Ghost (ícono, logos, portada, social)
 docs/       la página que se publica en criptonautas.co/kit (generada)
 ```
@@ -33,6 +34,15 @@ make
 `make` primero verifica (simetría del símbolo, fidelidad del nombre respecto del original, animación sin SMIL) y después regenera `dist/` y `docs/`. Si una verificación falla, no se genera nada. Ningún archivo generado lleva metadatos.
 
 **Para actualizar el logo:** cambiar `src/simbolo.py` o `src/nombre.py`, correr `make` y revisar `docs/index.html`. Todos los archivos, el ZIP y la página se actualizan juntos.
+
+## Qué cambia en v1.3
+
+- **Rojo Óxido** pasa a `#E5500A` (claro) y `#F3936A` (oscuro); antes `#E6211E` y `#F98E76`. Los nombres no cambian (`rojo-oxido`, `--cn-rojo-oxido`, las claves de `tokens.json`), así que nada que los use se rompe. El rojo claro da 3,07:1 sobre Paper: solo texto grande y gráficos, como antes.
+- **Violeta Tinta · botones** `#8E4CFF`, token solo de modo oscuro (`--cn-violeta-boton`): fondo de botones primarios con texto blanco, 4,54:1. Los enlaces siguen en `#C89DFF`, porque `#8E4CFF` como texto sobre `#181719` da solo 3,94:1. El código de Discourse que lo aplica está en `discourse/tema/`.
+- **Lato** se suma a la tipografía: texto e interfaz del foro. Inter Tight sigue en los titulares de todas las superficies y Lora en la lectura larga del blog.
+- Los TTF del ZIP se recortan al set latino que usa el kit (siguen siendo instalables y conservan los ejes variables): el ZIP baja a ~1 MB. `fonts-src/` conserva los archivos completos.
+- **Splash** más lento: de 0,55 s a 0,9 s por paso en `src/splash.py` (`discourse/splash.svg` ya iba a 0,9 s).
+- `make` no regenera `discourse/` ni `ghost/`: su rojo se cambió en el lugar. Las imágenes ya subidas a Discourse o Ghost hay que volver a subirlas, y en la paleta del foro hay que actualizar `quaternary` a mano.
 
 ## Splash en Discourse
 
