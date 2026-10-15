@@ -1,0 +1,5 @@
+// Primary buttons take the brand button violet (--cn-btn, color_definitions.scss)
+// instead of Horizon's --accent-color, which is the palette's tertiary.
+.btn-primary {
+  --accent-color: var(--cn-btn);
+}
