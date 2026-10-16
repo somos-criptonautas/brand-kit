@@ -15,7 +15,6 @@ src/        el código que genera cada archivo
   kit.py          arma dist/, el ZIP y la página
   pagina.py       el HTML de la página
   discourse.json  esquema de color del tema de Discourse
-  portada.py      portadas 1200×630 para artículos y posts (CLI y HTTP para n8n)
 fonts-src/  Inter Tight, Lora y Lato con su licencia OFL
 dist/       archivos listos para usar (generados)
 discourse/  imágenes para los settings de Discourse (logos, íconos, splash, push)
@@ -52,34 +51,7 @@ make
 
 ## Portadas automáticas
 
-`src/portada.py` arma la portada 1200×630 sobre la plantilla del kit: categoría, título en Inter Tight (hasta 3 líneas, corta solo y avisa si no entra) e ilustración opcional en el hueco de la derecha. Sale en PNG y WebP, sin metadatos.
-
-```
-python3 src/portada.py --categoria "Curso" --titulo "Qué es una wallet" --imagen ilus.png
-# → portadas/tct_que-es-una-wallet_portada_v1.png y .webp
-```
-
-Necesita Inter Tight instalada en el sistema (las de `fonts-src/`).
-
-**Con n8n:** correr el servicio en Docker en la misma red que n8n.
-
-```
-make
-docker build -f Dockerfile.portada -t criptonautas-portada .
-umask 077; printf 'PORTADA_TOKEN=%s\n' "$(openssl rand -hex 32)" > portada.env
-docker run -d --name portada --restart unless-stopped --network <red-de-n8n> --env-file portada.env \
-  --read-only --tmpfs /tmp:size=16m --cap-drop ALL --security-opt no-new-privileges \
-  --memory 256m --pids-limit 64 criptonautas-portada
-```
-
-En n8n, un nodo **HTTP Request**:
-
-- Method `POST`, URL `http://portada:8787/portada`
-- Authentication: Header Auth → `Authorization: Bearer <token>`
-- Body JSON: `{"categoria": "{{ $json.categoria }}", "titulo": "{{ $json.titulo }}", "formato": "webp"}`. La ilustración va solo por línea de comandos: el servidor nunca decodifica imágenes ajenas.
-- Response → Response Format: **File**. El nodo siguiente recibe la portada como binario y la sube a Ghost o Discourse.
-
-El servicio no arranca sin un `PORTADA_TOKEN` de 32 caracteres o más, y no publica ningún puerto: solo lo alcanza n8n por la red interna. Errores: `422` con el motivo en texto (título largo, JSON inválido), `401` token incorrecto, `400` sin `Content-Length`, `413` cuerpo de más de 4 KB. `GET /salud` responde `ok`.
+Las portadas automáticas para los posts de Ghost sin imagen destacada las genera [criptonautas-featured-ghost-cover](https://github.com/somos-criptonautas/criptonautas-featured-ghost-cover), sobre la plantilla 1200×630 de este kit.
 
 ## Publicar con nginx
 

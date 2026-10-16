@@ -7,11 +7,11 @@ conventions (README, licenses, commits) are in the [contributing guide](https://
 
 ```bash
 pip install cairosvg numpy pillow scikit-image fonttools brotli
-make          # symbol, name, splash and lockup checks, then dist/, docs/ and portada.py --probar
+make          # symbol, name, splash and lockup checks, then dist/ and docs/
 ```
 
 `make` needs Inter Tight installed system-wide (`fonts-src/`); without them
-cairo falls back to another face and the covers come out wrong without failing.
+cairo falls back to another face and the templates come out wrong without failing.
 
 ## What a change is reviewed against
 
@@ -28,6 +28,6 @@ cairo falls back to another face and the covers come out wrong without failing.
 - The name is lettering rebuilt from `src/fuente/logo-original-2023.png`, not a font.
   Don't re-set it in a typeface.
 - The splash animates with CSS transform/opacity only: Discourse strips SMIL.
-- `portada.py` measures titles with Pillow at weight 800 without the -1.1 letter-spacing,
-  so it overestimates and cairo always fits. If the tracking or weight changes, measure again.
+- The automatic covers service ([criptonautas-featured-ghost-cover](https://github.com/somos-criptonautas/criptonautas-featured-ghost-cover))
+  copies the `portada-1200x630` geometry and the horizontal lockup. If either changes, update it there too.
 - The ZIP uses a fixed date so rebuilding without changes gives the same bytes.

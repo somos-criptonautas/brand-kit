@@ -15,7 +15,6 @@ src/        the code that builds every file
   kit.py          builds dist/, the ZIP and the page
   pagina.py       the page's HTML
   discourse.json  Discourse theme colour scheme
-  portada.py      1200×630 covers for articles and posts (CLI and HTTP for n8n)
 fonts-src/  Inter Tight, Lora and Lato with their OFL licence
 dist/       ready-to-use files (generated)
 discourse/  images for Discourse's settings (logos, icons, splash, push)
@@ -52,34 +51,7 @@ make
 
 ## Automatic covers
 
-`src/portada.py` builds the 1200×630 cover on the kit's template: category, title in Inter Tight (up to 3 lines, wrapped automatically, with an error if it doesn't fit) and an optional illustration in the right-hand slot. Output is PNG and WebP, without metadata.
-
-```
-python3 src/portada.py --categoria "Curso" --titulo "Qué es una wallet" --imagen ilus.png
-# → portadas/tct_que-es-una-wallet_portada_v1.png and .webp
-```
-
-Needs Inter Tight installed system-wide (the ones in `fonts-src/`).
-
-**With n8n:** run the service in Docker on the same network as n8n.
-
-```
-make
-docker build -f Dockerfile.portada -t criptonautas-portada .
-umask 077; printf 'PORTADA_TOKEN=%s\n' "$(openssl rand -hex 32)" > portada.env
-docker run -d --name portada --restart unless-stopped --network <n8n-network> --env-file portada.env \
-  --read-only --tmpfs /tmp:size=16m --cap-drop ALL --security-opt no-new-privileges \
-  --memory 256m --pids-limit 64 criptonautas-portada
-```
-
-In n8n, an **HTTP Request** node:
-
-- Method `POST`, URL `http://portada:8787/portada`
-- Authentication: Header Auth → `Authorization: Bearer <token>`
-- Body JSON: `{"categoria": "{{ $json.categoria }}", "titulo": "{{ $json.titulo }}", "formato": "webp"}`. The illustration is CLI-only: the server never decodes images from outside.
-- Response → Response Format: **File**. The next node receives the cover as binary and uploads it to Ghost or Discourse.
-
-The service refuses to start without a `PORTADA_TOKEN` of 32+ characters and publishes no port: only n8n reaches it, over the internal network. Errors: `422` with the reason as text (title too long, invalid JSON), `401` wrong token, `400` no `Content-Length`, `413` body over 4 KB. `GET /salud` answers `ok`.
+Automatic covers for Ghost posts without a featured image are made by [criptonautas-featured-ghost-cover](https://github.com/somos-criptonautas/criptonautas-featured-ghost-cover), on this kit's 1200×630 template.
 
 ## Publishing with nginx
 
