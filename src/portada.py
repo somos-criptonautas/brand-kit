@@ -146,9 +146,11 @@ class Handler(BaseHTTPRequestHandler):
     token = b''         # lo fija --servir; vacío rechaza todo
     max_body = 4096     # solo viajan dos textos cortos
 
-    def _send(self, code, body, ctype='text/plain; charset=utf-8'):
+    def _send(self, code, body, ctype='text/plain; charset=utf-8', nombre=None):
         self.send_response(code)
         self.send_header('Content-Type', ctype)
+        if nombre:      # Ghost rechaza archivos sin extensión; n8n toma el nombre de este header
+            self.send_header('Content-Disposition', f'attachment; filename="{nombre}"')
         self.send_header('Content-Length', str(len(body)))
         self.end_headers()
         self.wfile.write(body)
@@ -177,7 +179,7 @@ class Handler(BaseHTTPRequestHandler):
             out = render(str(req.get('categoria', '')), str(req.get('titulo', '')), None, fmt)
         except (Invalida, ValueError) as e:      # ValueError cubre JSON y UTF-8 inválidos
             return self._send(422, str(e).encode())
-        self._send(200, out, f'image/{fmt}')
+        self._send(200, out, f'image/{fmt}', f'portada.{fmt}')
 
     def log_message(self, fmt, *args):      # sin registrar títulos ni IPs
         pass
