@@ -24,9 +24,9 @@ El kit es de la comunidad: cualquiera puede proponer cambios.
 
 - Alrededor del logo queda un espacio libre igual a la altura de una figura del símbolo. Ningún elemento entra en esa zona.
 - Toda pieza (imagen, video, plantilla, página) deja al menos un 5 % del lado corto como margen hasta el borde.
-- Los títulos se escriben en minúscula, salvo la primera letra y los nombres propios. No usamos mayúscula en cada palabra.
-- Excepción: los canales van en mayúsculas. En el blog son los tags de Ghost; en la comunidad, las categorías de Discourse.
-- En la interfaz (botones, etiquetas, menús, avisos) no usamos mayúsculas, salvo `NIVEL`, `LVL`, los nombres de canales y las siglas.
+- Los títulos de contenido (artículos, temas, piezas) llevan mayúscula solo en la primera letra y en los nombres propios. No usamos mayúscula en cada palabra.
+- La interfaz (botones, enlaces, etiquetas, menús, avisos, encabezados de bloque) va toda en minúscula.
+- La única excepción son los canales, que van en mayúsculas: en el blog, los tags de Ghost; en la comunidad, las categorías de Discourse. Las siglas se escriben como siempre (BTC, P2P).
 
 ## English
 
@@ -42,6 +42,6 @@ The kit belongs to the community: anyone can propose changes.
 
 - Keep a clear zone around the logo equal to the height of one figure of the symbol. Nothing enters that zone.
 - Every piece (image, video, template, page) keeps at least 5 % of its short side as margin to the edge.
-- Headings are written in lowercase except for the first letter and proper nouns. No title case.
-- Exception: channels are set in uppercase. On the blog they are Ghost tags; in the community, Discourse categories.
-- In the interface (buttons, labels, menus, notices) we don't capitalise, except `NIVEL`, `LVL`, channel names and acronyms.
+- Content titles (articles, topics, pieces) capitalise only the first letter and proper nouns. No title case.
+- The interface (buttons, links, labels, menus, notices, block headings) is all lowercase.
+- The one exception is channels, set in uppercase: on the blog, Ghost tags; in the community, Discourse categories. Acronyms keep their usual spelling (BTC, P2P).
