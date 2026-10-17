@@ -26,6 +26,7 @@ El kit es de la comunidad: cualquiera puede proponer cambios.
 - Toda pieza (imagen, video, plantilla, página) deja al menos un 5 % del lado corto como margen hasta el borde.
 - Los títulos se escriben en minúscula, salvo la primera letra y los nombres propios. No usamos mayúscula en cada palabra.
 - Excepción: los canales van en mayúsculas. En el blog son los tags de Ghost; en la comunidad, las categorías de Discourse.
+- En la interfaz (botones, etiquetas, menús, avisos) no usamos mayúsculas, salvo `NIVEL`, `LVL`, los nombres de canales y las siglas.
 
 ## English
 
@@ -43,3 +44,4 @@ The kit belongs to the community: anyone can propose changes.
 - Every piece (image, video, template, page) keeps at least 5 % of its short side as margin to the edge.
 - Headings are written in lowercase except for the first letter and proper nouns. No title case.
 - Exception: channels are set in uppercase. On the blog they are Ghost tags; in the community, Discourse categories.
+- In the interface (buttons, labels, menus, notices) we don't capitalise, except `NIVEL`, `LVL`, channel names and acronyms.
