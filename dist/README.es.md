@@ -51,7 +51,7 @@ make
 
 ## Portadas automáticas
 
-Las portadas automáticas para los posts de Ghost sin imagen destacada las genera [criptonautas-featured-ghost-cover](https://github.com/somos-criptonautas/criptonautas-featured-ghost-cover), sobre la plantilla 1200×630 de este kit.
+Las portadas automáticas para los posts de Ghost sin imagen destacada, y para los topics de wiki, curso y glosario de Discourse, las genera [criptonautas-featured-cover](https://github.com/somos-criptonautas/criptonautas-featured-cover), sobre la plantilla 1200×630 de este kit.
 
 ## Publicar con nginx
 

@@ -51,7 +51,7 @@ make
 
 ## Automatic covers
 
-Automatic covers for Ghost posts without a featured image are made by [criptonautas-featured-ghost-cover](https://github.com/somos-criptonautas/criptonautas-featured-ghost-cover), on this kit's 1200×630 template.
+Automatic covers for Ghost posts without a featured image, and for Discourse wiki, course and glossary topics, are made by [criptonautas-featured-cover](https://github.com/somos-criptonautas/criptonautas-featured-cover), on this kit's 1200×630 template.
 
 ## Publishing with nginx
 

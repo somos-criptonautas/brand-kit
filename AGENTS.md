@@ -28,6 +28,6 @@ cairo falls back to another face and the templates come out wrong without failin
 - The name is lettering rebuilt from `src/fuente/logo-original-2023.png`, not a font.
   Don't re-set it in a typeface.
 - The splash animates with CSS transform/opacity only: Discourse strips SMIL.
-- The automatic covers service ([criptonautas-featured-ghost-cover](https://github.com/somos-criptonautas/criptonautas-featured-ghost-cover))
+- The automatic covers service ([criptonautas-featured-cover](https://github.com/somos-criptonautas/criptonautas-featured-cover))
   copies the `portada-1200x630` geometry and the horizontal lockup. If either changes, update it there too.
 - The ZIP uses a fixed date so rebuilding without changes gives the same bytes.
